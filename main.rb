@@ -1,17 +1,17 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 require 'dotenv'
 
 require_relative 'ble.rb'
 require_relative 'plugin.rb'
 
-Dir['plugins/*.rb'].each {|file| require File.join(File.dirname(__FILE__), file) }
+Dir['plugins/*.rb'].each { |file| require File.join(File.dirname(__FILE__), file) }
 
 Thread.abort_on_exception = true
 Dotenv.load!
 
 puts "Registered plugins: #{Plugin.each_c(&:to_s).join(', ')}"
 
-UID = '59:0E:4B:18:AC:E6'
+UID = '59:0E:4B:18:AC:E6'.freeze
 
 ble = BLE.instance
 ble.start(UID)

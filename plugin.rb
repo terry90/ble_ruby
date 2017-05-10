@@ -10,15 +10,15 @@ class Plugin
       @registry ||= []
     end
 
-    def each(&block)
+    def each
       registry.each do |member|
-        block.call(member)
+        yield(member)
       end
     end
 
-    def each_c(&block)
+    def each_c
       registry.map(&:class).each do |member|
-        block.call(member)
+        yield(member)
       end
     end
   end

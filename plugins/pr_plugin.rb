@@ -2,8 +2,8 @@ require 'json'
 require 'net/http'
 
 class PRPlugin < Plugin
-  BASE_URL = 'https://api.github.com'
-  
+  BASE_URL = 'https://api.github.com'.freeze
+
   def run(ble = BLE.instance)
     nb_pr = 0
     @repos ||= read_repos
@@ -12,7 +12,7 @@ class PRPlugin < Plugin
     end
     nb_pr > 0 ? ble.pulse(ble.current_color, [5 - nb_pr, 2].max) : ble.halt_effect
   end
-  
+
   private
 
   def pr_nb_for(repo)
@@ -31,18 +31,16 @@ class PRPlugin < Plugin
       0
     end
   end
-  
+
   def read_repos
-    begin
-      path = File.join(File.dirname(__FILE__), '../pr_repos')
-      content = File.readlines(path)
-      repos = content.map(&:strip).reject(&:empty?)
-      return repos
-    rescue Errno::ENOENT => e
-      puts 'Please create the file pr_repos'
-      puts 'Add one repo per line'
-      puts 'Must be formatted like this: owner/repo'
-      repos = []
-    end
+    path = File.join(File.dirname(__FILE__), '../pr_repos')
+    content = File.readlines(path)
+    repos = content.map(&:strip).reject(&:empty?)
+    return repos
+  rescue Errno::ENOENT => e
+    puts 'Please create the file pr_repos'
+    puts 'Add one repo per line'
+    puts 'Must be formatted like this: owner/repo'
+    repos = []
   end
 end
