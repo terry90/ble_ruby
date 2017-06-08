@@ -72,7 +72,9 @@ class BLE
     Thread.new do
       until (line = out.gets).nil?
         puts "#{key}#{line}"
-        puts('Reconnecting...') && connect if line =~ /#{RECONNECT_STR}/
+        if line =~ /#{RECONNECT_STR}/
+          puts('Reconnecting...') && connect
+        end
       end
     end
   end
